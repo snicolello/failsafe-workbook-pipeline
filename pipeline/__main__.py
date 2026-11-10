@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .board import render_board
-from .run import ROOT, ingest
+from .run import ingest
 from .store import Store
 
 
