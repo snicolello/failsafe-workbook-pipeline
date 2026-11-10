@@ -94,7 +94,7 @@ class Store:
 
     def _latest(self, brand, tab):
         return self.connection.execute(
-            """SELECT a.sha, a.profile_hash, a.parser_version, a.observed_at, h.accepted_id
+            """SELECT a.sha, a.profile_hash, a.parser_version, a.observed_at, h.accepted_id, a.outcome
                FROM tab_heads h JOIN attempts a ON a.id = h.latest_id
                WHERE h.brand = ? AND h.tab = ?""",
             [brand, tab],
@@ -103,20 +103,22 @@ class Store:
     def is_current(self, brand: str, tab: str, sha: str, profile_hash: str,
                    parser_version: str) -> bool:
         head = self._latest(brand, tab)
-        return head is not None and head[:3] == (sha, profile_hash, parser_version)
+        return head is not None and head[5] != "retired" and head[:3] == (
+            sha, profile_hash, parser_version
+        )
 
     def apply(
         self, brand: str, tab: str, sha: str, profile_hash: str, parser_version: str,
         observed_at: str | datetime, *, records: Iterable[dict] | None = None,
-        rejection: Rejection | None = None, finding=None,
+        rejection: Rejection | None = None, finding=None, retired: bool = False,
     ) -> bool:
         """Commit one complete tab decision, or leave its previous head intact.
 
         A transition back to earlier bytes is a new observation. A rejection can
         advance the latest attempt pointer; only a pass advances the report pointer.
         """
-        if (records is None) == (rejection is None):
-            raise ValueError("Supply exactly one of records or rejection")
+        if sum((records is not None, rejection is not None, retired)) != 1:
+            raise ValueError("Supply exactly one of records, rejection, or retirement")
         if not all((brand, tab, sha, profile_hash, parser_version)):
             raise ValueError("Incomplete attempt identity")
         instant = _instant(observed_at)
@@ -124,13 +126,15 @@ class Store:
         db.execute("BEGIN TRANSACTION")
         try:
             head = self._latest(brand, tab)
-            if head and head[:3] == (sha, profile_hash, parser_version):
+            if head and head[:3] == (sha, profile_hash, parser_version) and (head[5] == "retired") == retired:
                 db.execute("ROLLBACK")
                 return False
             if head and instant < head[3]:
                 raise ValueError(f"Out-of-order observation for {brand}/{tab}")
+            if retired and (head is None or head[4] is not None):
+                raise ValueError("Only a never-accepted tab can be retired")
 
-            evidence = [None, "accepted", None, None, None, None]
+            evidence = [None, "retired" if retired else "accepted", None, None, None, None]
             if rejection is not None:
                 evidence = [
                     rejection.category, rejection.outcome, rejection.cell,
@@ -210,6 +214,7 @@ class Store:
                FROM tab_heads h JOIN attempts a ON a.id = h.latest_id
                LEFT JOIN attempts p ON p.id = h.accepted_id
                LEFT JOIN counts c ON c.attempt_id = h.accepted_id
+               WHERE a.outcome <> 'retired'
                ORDER BY h.brand, h.tab"""
         )
 
