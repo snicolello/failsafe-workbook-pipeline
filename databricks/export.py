@@ -140,17 +140,9 @@ def prepare_sql(files, output, catalog):
                  f"FROM (SELECT * FROM {table} EXCEPT ALL SELECT * FROM {source}) conflicts;\n")
     for file in ("merge.sql", "report.sql", "differences.sql"):
         load += "\n" + (HERE / file).read_text(encoding="utf-8")
-    load += """
-SELECT assert_true(COUNT(*) = 0, 'Snapshot parity failed. Inspect snapshot_differences.') FROM snapshot_differences;
-WITH counts AS (
-    SELECT snapshot, COUNT(*) AS served_rows FROM snapshot_report GROUP BY snapshot
-), discrepancies AS (
-    SELECT snapshot, COUNT(*) AS n FROM snapshot_differences GROUP BY snapshot
-)
-SELECT c.snapshot, COALESCE(r.served_rows, 0) AS served_rows, COALESCE(d.n, 0) AS differing_rows_or_statuses
-FROM checkpoints c LEFT JOIN counts r ON r.snapshot = c.snapshot
-LEFT JOIN discrepancies d ON d.snapshot = c.snapshot ORDER BY c.through_id;
-"""
+    load += ("\nSELECT assert_true(COUNT(*) = 0, 'Snapshot parity failed. "
+             "Inspect snapshot_differences.') FROM snapshot_differences;\n")
+    load += (HERE / "results.sql").read_text(encoding="utf-8")
     (output / "02_load_and_verify.sql").write_text(load, encoding="utf-8")
 
 
@@ -173,13 +165,9 @@ def check_local(files):
         differences = db.execute("SELECT snapshot, mismatch, COUNT(*) FROM snapshot_differences GROUP BY 1, 2").fetchall()
         if differences:
             raise ValueError(f"Snapshot parity failed: {differences}")
-        result = db.execute("""
-            SELECT c.snapshot, COALESCE(SUM(row_count), 0), COUNT(*) FILTER (WHERE status = 'current'),
-                   COUNT(*) FILTER (WHERE status = 'fallback'), COUNT(*) FILTER (WHERE status = 'quarantined')
-            FROM checkpoints c LEFT JOIN snapshot_status s ON s.snapshot = c.snapshot
-            GROUP BY c.snapshot, c.through_id ORDER BY c.through_id""").fetchall()
-        return [dict(zip(("snapshot", "served_rows", "current", "fallback", "quarantined"), row),
-                     differing_rows_or_statuses=0) for row in result]
+        result = db.execute((HERE / "results.sql").read_text(encoding="utf-8")).fetchall()
+        columns = ("snapshot", "served_rows", "current", "fallback", "quarantined", "differing_rows_or_statuses")
+        return [dict(zip(columns, row)) for row in result]
 
 
 def main():
