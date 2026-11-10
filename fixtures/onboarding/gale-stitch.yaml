@@ -1,0 +1,13 @@
+brand: gale-stitch
+stages: [Sample, Fit, Release]
+tabs:
+  Summit: &layout
+    regions:
+      - headers: [4]
+        section_field: stage
+        columns:
+          item_ref: [Stock mark]
+          season: [Season]
+          target_date: [Target]
+          owner: [Workcell]
+  Valley: *layout
