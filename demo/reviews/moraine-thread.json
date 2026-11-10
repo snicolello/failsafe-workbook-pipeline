@@ -1,0 +1,21 @@
+{
+  "brand": "moraine-thread",
+  "tab": "Shells",
+  "sha": "766f62e0cc0d8f80e57db40b8902dec2062a6256b03ca967f1d5d12248519385",
+  "cell": "D4",
+  "value": "Awaiting field call",
+  "category": "unrecognized_value",
+  "finding": {
+    "reviewer": "Claude",
+    "sha_comparison": "different",
+    "cell": "D4",
+    "quote": "Awaiting field call",
+    "explanation": "Stage is outside this profile's governed vocabulary",
+    "review_status": "received",
+    "commentary": "Cell **D4** on the **Shells** tab contains the value \"**Awaiting field call**\", which is not in this profile's approved Stage vocabulary. Replace it with an approved Stage value, or confirm with the profile owner if \"Awaiting field call\" should be added. The file's checksum also differs from the reference, so confirm you're editing the expected version. This exception's acceptance decision stays as it is.",
+    "model": [
+      "claude-haiku-5-5"
+    ],
+    "cost_usd": 0.0001952
+  }
+}

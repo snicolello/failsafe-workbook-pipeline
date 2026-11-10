@@ -1,0 +1,21 @@
+{
+  "brand": "flintwake",
+  "tab": "Ridge",
+  "sha": "d57e5ae23277ee5ffcc37500c987d6f6162e8546381f6785d50f36c8416770b8",
+  "cell": "D1",
+  "value": "Due on",
+  "category": "structural_drift",
+  "finding": {
+    "reviewer": "Claude",
+    "sha_comparison": "different",
+    "cell": "D1",
+    "quote": "Due on",
+    "explanation": "Expected header(s): Target date",
+    "review_status": "received",
+    "commentary": "On the Ridge tab, cell D1 contains \"Due on\", but the rule expects the header \"Target date\". This is flagged as structural drift, and the file's SHA differs from the expected baseline. If \"Target date\" is the intended header, rename D1 to match and recheck the tab. I haven't changed the acceptance decision.",
+    "model": [
+      "claude-haiku-5-5"
+    ],
+    "cost_usd": 0.0001778
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quarantined tab attempt",
+  "type": "object",
+  "required": [
+    "brand",
+    "tab",
+    "sha",
+    "profile_hash",
+    "parser_version",
+    "observed_at",
+    "category",
+    "outcome",
+    "cell",
+    "value",
+    "message",
+    "finding"
+  ],
+  "properties": {
+    "brand": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tab": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parser_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observed_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cell": {
+      "type": "string",
+      "minLength": 1
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "profile_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "category": {
+      "enum": [
+        "processing_failure",
+        "structural_drift",
+        "ambiguous_columns",
+        "identity_ambiguity",
+        "unrecognized_value"
+      ]
+    },
+    "outcome": {
+      "enum": [
+        "blocked",
+        "triaged"
+      ]
+    },
+    "finding": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  }
+}
