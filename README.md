@@ -46,7 +46,7 @@ flowchart LR
 
 **A layout rule has an owner and a scope.** A shared parser handles banners, hierarchical headers, sections, horizontal milestones, title-derived fields and stacked tables. A profile-only preview compares actual field values and lineage across brands. Extending record identity required code, a fixture and a regression that keeps ambiguous pairs out. [Profiles](profiles/) · [Parser](pipeline/parser.py) · [Split-row regression](tests/test_paired_rows.py) · [Owner-reviewed profile changes](demo/repair-review.md)
 
-**A model can explain a refusal.** The normal path is deterministic. The replay includes genuine, saved Claude findings matched to the workbook SHA, tab, category and source excerpt. The optional live path uses a tool-free Claude Code process with a per-call spending limit. Only the acceptance code can publish rows. [Shells finding](demo/reviews/moraine-thread.json) · [Review integration](pipeline/review.py) · [Onboarding and repair instructions](skills/wip-structure/SKILL.md)
+**A model can explain a refusal and propose a repair.** The normal path is deterministic. The replay includes genuine Claude findings matched to the workbook SHA, tab, category and source excerpt. Claude's Flintwake proposal passed replay. Its Gale Stitch proposal assigned two competing sources for stage, so validation refused it before any rows were written. The owner-approved profile passed. The optional live path uses a tool-free Claude Code process with a per-call spending limit. [Shells finding](demo/reviews/moraine-thread.json) · [Profile review evidence](demo/repair-review.md) · [Review integration](pipeline/review.py)
 
 ## Inspect or change the evidence
 

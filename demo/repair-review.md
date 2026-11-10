@@ -26,3 +26,10 @@ uv run --locked python -m pipeline.preview fixtures/run4/gale-stitch.xlsx fixtur
 | Gale Stitch, run 4 | `868a1de1fba26ac275c21ff4109d635af9f55fc0e89fbfaf9ea6b67330c49489` | `04ad1cc5a3d6e49b66ebd96e4e0b30b9ad325706cd257b1d257732fce0e9d334` |
 
 Add `--json` to inspect the full before-and-after rows, per-field lineage and tab findings. The [review instructions](../skills/wip-structure/SKILL.md) describe how to conduct another session with Claude.
+
+## What Claude proposed independently
+
+Two later tool-free Claude sessions received the public schema, field agreement, review instructions and source excerpts. Flintwake's session also received its original profile. The approved candidates were withheld. Each session record preserves the actual prompt, reply, reported cost and local replay result.
+
+- **Flintwake passed.** Claude proposed a brand-level date alias. On run 2 and again on run 4, its tab decisions, changed rows, field lineage and seven control brands matched the approved profile. [Flintwake proposal and replays](reviews/flintwake-proposal.json)
+- **Gale Stitch was refused before ingestion.** An earlier review saw only the first section and incorrectly suggested replacing `section_field: stage`. The independent proposal received every section marker on both tabs. It recognized the vertical sections but also mapped all three stage labels as horizontal milestones. That gave stage and date multiple sources. The preflight rejected the proposal on Summit. The owner-approved profile uses one source per field and adds 36 items. [Initial review](reviews/gale-stitch-profile.json) · [Gale Stitch proposal and refusal](reviews/gale-stitch-proposal.json)
