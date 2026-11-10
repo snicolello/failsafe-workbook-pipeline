@@ -1,0 +1,54 @@
+{
+  "engine": "DuckDB local rehearsal",
+  "merge_passes": 2,
+  "snapshots": [
+    {
+      "snapshot": "run1",
+      "served_rows": 288,
+      "current": 16,
+      "fallback": 0,
+      "quarantined": 0,
+      "differing_rows_or_statuses": 0
+    },
+    {
+      "snapshot": "run2",
+      "served_rows": 288,
+      "current": 14,
+      "fallback": 2,
+      "quarantined": 0,
+      "differing_rows_or_statuses": 0
+    },
+    {
+      "snapshot": "run2-repaired",
+      "served_rows": 288,
+      "current": 15,
+      "fallback": 1,
+      "quarantined": 0,
+      "differing_rows_or_statuses": 0
+    },
+    {
+      "snapshot": "run3",
+      "served_rows": 288,
+      "current": 15,
+      "fallback": 1,
+      "quarantined": 0,
+      "differing_rows_or_statuses": 0
+    },
+    {
+      "snapshot": "run3-repaired",
+      "served_rows": 288,
+      "current": 16,
+      "fallback": 0,
+      "quarantined": 0,
+      "differing_rows_or_statuses": 0
+    },
+    {
+      "snapshot": "run4",
+      "served_rows": 324,
+      "current": 18,
+      "fallback": 0,
+      "quarantined": 0,
+      "differing_rows_or_statuses": 0
+    }
+  ]
+}
