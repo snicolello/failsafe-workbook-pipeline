@@ -1,0 +1,13 @@
+brand: flintwake
+stages: [Sample, Fit, Release]
+tabs:
+  Ridge: &flat
+    regions:
+      - headers: [1]
+        columns:
+          item_ref: [Item ref]
+          season: [Season]
+          stage: [Stage]
+          target_date: [Target date]
+          owner: [Owner]
+  Basin: *flat

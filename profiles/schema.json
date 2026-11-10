@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Workbook profile",
+  "type": "object",
+  "required": ["brand", "stages", "tabs"],
+  "additionalProperties": false,
+  "properties": {
+    "brand": {"type": "string", "minLength": 1},
+    "stages": {"$ref": "#/$defs/names"},
+    "aliases": {"$ref": "#/$defs/fieldColumns"},
+    "tabs": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["regions"],
+        "additionalProperties": false,
+        "properties": {
+          "regions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/region"}}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "names": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "fieldColumns": {
+      "type": "object",
+      "propertyNames": {"enum": ["item_ref", "season", "stage", "target_date", "owner"]},
+      "additionalProperties": {"$ref": "#/$defs/names"}
+    },
+    "region": {
+      "type": "object",
+      "required": ["headers", "columns"],
+      "additionalProperties": false,
+      "properties": {
+        "headers": {"type": "array", "minItems": 1, "uniqueItems": true,
+          "items": {"type": "integer", "minimum": 1}},
+        "end_row": {"type": "integer", "minimum": 1},
+        "columns": {"$ref": "#/$defs/fieldColumns"},
+        "from_tab": {"type": "object", "minProperties": 1,
+          "propertyNames": {"enum": ["season", "stage"]},
+          "additionalProperties": {"type": "string", "minLength": 1}},
+        "section_field": {"const": "stage"},
+        "milestones": {"type": "object", "minProperties": 1,
+          "additionalProperties": {"$ref": "#/$defs/names"}}
+      }
+    }
+  }
+}
