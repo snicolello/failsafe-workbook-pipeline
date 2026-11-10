@@ -1,0 +1,13 @@
+brand: cairn-loom
+stages: [Sample, Fit, Release]
+tabs:
+  North: &layout
+    regions:
+      - headers: [1]
+        section_field: stage
+        columns:
+          item_ref: [Stock mark]
+          season: [Season]
+          target_date: [Target]
+          owner: [Workcell]
+  South: *layout

@@ -1,0 +1,17 @@
+brand: tarn-field
+stages: [Sample, Fit, Release]
+tabs:
+  Spring:
+    regions:
+      - headers: [1]
+        from_tab: {season: Spring}
+        columns: &columns
+          item_ref: [Ticket]
+          stage: [Review stage]
+          owner: [Custodian]
+          target_date: [Needed by]
+  Fall:
+    regions:
+      - headers: [1]
+        from_tab: {season: Fall}
+        columns: *columns

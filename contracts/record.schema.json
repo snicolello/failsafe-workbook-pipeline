@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Accepted WIP record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "brand",
+    "tab",
+    "sha",
+    "item_ref",
+    "season",
+    "stage",
+    "target_date",
+    "owner",
+    "lineage"
+  ],
+  "properties": {
+    "brand": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tab": {
+      "type": "string",
+      "minLength": 1
+    },
+    "item_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "season": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stage": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "target_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "lineage": {
+      "type": "object",
+      "required": [
+        "item_ref",
+        "season",
+        "stage",
+        "target_date",
+        "owner"
+      ],
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^(@title|[A-Z]+[1-9][0-9]*)$"
+      }
+    }
+  }
+}

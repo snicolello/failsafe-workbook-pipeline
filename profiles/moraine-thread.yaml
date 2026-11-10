@@ -1,0 +1,13 @@
+brand: moraine-thread
+stages: [Sample, Fit, Release]
+tabs:
+  Shells: &layout
+    regions:
+      - headers: [3]
+        columns:
+          item_ref: [Style key]
+          season: [Season drop]
+          stage: [Gate]
+          target_date: [Promise]
+          owner: [Coordinator]
+  Packs: *layout

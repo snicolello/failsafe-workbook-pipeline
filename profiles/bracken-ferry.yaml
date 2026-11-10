@@ -1,0 +1,15 @@
+brand: bracken-ferry
+stages: [Sample, Fit, Release]
+tabs:
+  Fabric: &layout
+    regions:
+      - headers: [1]
+        milestones:
+          Sample: [Sample date]
+          Fit: [Fit date]
+          Release: [Release date]
+        columns:
+          item_ref: [Work order]
+          season: [Season]
+          owner: [Desk]
+  Trim: *layout

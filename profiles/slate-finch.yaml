@@ -1,0 +1,17 @@
+brand: slate-finch
+stages: [Sample, Fit, Release]
+tabs:
+  Sample:
+    regions:
+      - headers: [1]
+        from_tab: {stage: Sample}
+        columns: &columns
+          item_ref: [Article]
+          season: [Range]
+          owner: [Handler]
+          target_date: [Due]
+  Release:
+    regions:
+      - headers: [1]
+        from_tab: {stage: Release}
+        columns: *columns
