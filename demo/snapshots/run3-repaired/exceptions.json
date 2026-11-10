@@ -1,0 +1,80 @@
+[
+  {
+    "brand": "flintwake",
+    "tab": "Ridge",
+    "sha": "d57e5ae23277ee5ffcc37500c987d6f6162e8546381f6785d50f36c8416770b8",
+    "profile_hash": "4f210990e910b3da396d5b3c5db473b0c21f3bdb3c28e9aa752b7bac977963bf",
+    "parser_version": "2",
+    "observed_at": "2026-06-02T09:00:00+00:00",
+    "category": "structural_drift",
+    "outcome": "blocked",
+    "cell": "D1",
+    "value": "Due on",
+    "message": "Expected header(s): Target date",
+    "finding": {
+      "reviewer": "Claude",
+      "sha_comparison": "different",
+      "cell": "D1",
+      "quote": "Due on",
+      "explanation": "Expected header(s): Target date",
+      "review_status": "recorded session replay",
+      "commentary": "On the Ridge tab, cell D1 contains \"Due on\", but the rule expects the header \"Target date\". This is flagged as structural drift, and the file's SHA differs from the expected baseline. If \"Target date\" is the intended header, rename D1 to match and recheck the tab. I haven't changed the acceptance decision.",
+      "model": [
+        "claude-haiku-5-5"
+      ],
+      "cost_usd": 0.0001778
+    }
+  },
+  {
+    "brand": "moraine-thread",
+    "tab": "Shells",
+    "sha": "766f62e0cc0d8f80e57db40b8902dec2062a6256b03ca967f1d5d12248519385",
+    "profile_hash": "777a176407b7f31ad0b4b63f297c6f5d3175a7b1feee2e4fd5b12546bdaba345",
+    "parser_version": "2",
+    "observed_at": "2026-06-02T09:00:00+00:00",
+    "category": "unrecognized_value",
+    "outcome": "triaged",
+    "cell": "D4",
+    "value": "Awaiting field call",
+    "message": "Stage is outside this profile's governed vocabulary",
+    "finding": {
+      "reviewer": "Claude",
+      "sha_comparison": "different",
+      "cell": "D4",
+      "quote": "Awaiting field call",
+      "explanation": "Stage is outside this profile's governed vocabulary",
+      "review_status": "recorded session replay",
+      "commentary": "Cell **D4** on the **Shells** tab contains the value \"**Awaiting field call**\", which is not in this profile's approved Stage vocabulary. Replace it with an approved Stage value, or confirm with the profile owner if \"Awaiting field call\" should be added. The file's checksum also differs from the reference, so confirm you're editing the expected version. This exception's acceptance decision stays as it is.",
+      "model": [
+        "claude-haiku-5-5"
+      ],
+      "cost_usd": 0.0001952
+    }
+  },
+  {
+    "brand": "copper-rill",
+    "tab": "East",
+    "sha": "4d5e115022565eed796d654d669f14a77afb0b54ab542a55af9ffc42dd67129b",
+    "profile_hash": "7dbdd0fa2da0c877ca1e211d0e307b4069ecaeb12da04f26b0163f33f9517af9",
+    "parser_version": "2",
+    "observed_at": "2026-06-03T09:00:00+00:00",
+    "category": "identity_ambiguity",
+    "outcome": "blocked",
+    "cell": "A20",
+    "value": "CR-018",
+    "message": "Reference-only row cannot identify a complete item",
+    "finding": {
+      "reviewer": "Claude",
+      "sha_comparison": "different",
+      "cell": "A20",
+      "quote": "CR-018",
+      "explanation": "Reference-only row cannot identify a complete item",
+      "review_status": "recorded session replay",
+      "commentary": "**Exception: identity_ambiguity (East tab)**\n\nCell A20 contains \"CR-018\", which is a reference-only value. Under the rule \"Reference-only row cannot identify a complete item,\" this row can't be used to identify a full item. To repair it, replace or supplement the reference with the identifying details the item needs. Also note that the sha_comparison is \"different,\" so confirm the tab matches the expected version before resubmitting. The acceptance decision is unchanged.",
+      "model": [
+        "claude-haiku-5-5"
+      ],
+      "cost_usd": 0.0002111
+    }
+  }
+]

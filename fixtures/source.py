@@ -78,6 +78,7 @@ def save_book(book, path: Path):
                 payload = re.sub(rb"(<dcterms:modified\b[^>]*>)[^<]+",
                                  rb"\g<1>2026-01-01T00:00:00Z", payload)
             member = ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
+            member.create_system = 0  # Preserve the same ZIP metadata on Windows and POSIX.
             member.compress_type = ZIP_DEFLATED
             member.external_attr = 0o600 << 16
             out.writestr(member, payload)
