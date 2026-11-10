@@ -1,0 +1,50 @@
+[
+  {
+    "snapshot": "run1",
+    "observed_at": "2026-06-01T09:00:00Z",
+    "rows": 288,
+    "current": 16,
+    "fallback": 0,
+    "quarantined": 0
+  },
+  {
+    "snapshot": "run2",
+    "observed_at": "2026-06-02T09:00:00Z",
+    "rows": 288,
+    "current": 14,
+    "fallback": 2,
+    "quarantined": 0
+  },
+  {
+    "snapshot": "run2-repaired",
+    "observed_at": "2026-06-02T12:00:00Z",
+    "rows": 288,
+    "current": 15,
+    "fallback": 1,
+    "quarantined": 0
+  },
+  {
+    "snapshot": "run3",
+    "observed_at": "2026-06-03T09:00:00Z",
+    "rows": 288,
+    "current": 15,
+    "fallback": 1,
+    "quarantined": 0
+  },
+  {
+    "snapshot": "run3-repaired",
+    "observed_at": "2026-06-03T12:00:00Z",
+    "rows": 288,
+    "current": 16,
+    "fallback": 0,
+    "quarantined": 0
+  },
+  {
+    "snapshot": "run4",
+    "observed_at": "2026-06-04T09:00:00Z",
+    "rows": 324,
+    "current": 18,
+    "fallback": 0,
+    "quarantined": 0
+  }
+]

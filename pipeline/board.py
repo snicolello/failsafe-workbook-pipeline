@@ -4,6 +4,7 @@ import json
 from collections import Counter, defaultdict
 from html import escape
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 
 FIELDS = (
@@ -86,10 +87,16 @@ def _evidence(status):
         value = json.dumps(status.get("value"), ensure_ascii=False, default=str)
         evidence = f'<p>Source <code>{_text(cell)}</code> · <code>{_text(value)}</code></p>'
     review = status.get("finding")
-    if isinstance(review, dict):
-        review = json.dumps(review, ensure_ascii=False, indent=2, default=str)
-    if review:
-        evidence += f"<p><strong>Review finding</strong></p><pre>{_text(review)}</pre>"
+    if isinstance(review, dict) and "reviewer" in review:
+        reviewer = "Local rule review" if review["reviewer"] == "deterministic" else f'Reviewed by {_text(review["reviewer"])}'
+        comparison = _text(review.get("sha_comparison", "unknown"))
+        evidence += f'<p>{reviewer} · Workbook SHA comparison ({comparison})</p>'
+        note = review.get("commentary") or review.get("review_status")
+        if note:
+            evidence += f"<p>{_text(note)}</p>"
+    elif review:
+        finding = json.dumps(review, ensure_ascii=False, indent=2) if isinstance(review, dict) else review
+        evidence += f"<p><strong>Review finding</strong></p><pre>{_text(finding)}</pre>"
     return (
         '<section class="evidence"><h3>Rejected input</h3>'
         f'<p>{_text(status["message"])}</p>{evidence}</section>'
@@ -118,7 +125,7 @@ def _accepted_rows(records, label):
 def _panel(status, records):
     state = status["status"]
     badge, _ = STATUSES[state]
-    brand = _text(status["brand"])
+    brand = _text(status["brand"].replace("-", " ").title())
     tab = _text(status["tab"])
     category = CATEGORIES.get(status.get("category"), status.get("category"))
     if state == "current":
@@ -154,6 +161,12 @@ def render_board(statuses, records, destination, *, title="Workbook status board
     for record in records:
         by_tab[(record["brand"], record["tab"])].append(record)
     ordered = sorted(statuses, key=lambda s: (STATUSES[s["status"]][1], s["brand"], s["tab"]))
+    if by_tab.keys() - {(s["brand"], s["tab"]) for s in ordered}:
+        raise ValueError("A report row has no corresponding tab decision")
+    for status in ordered:
+        rows = by_tab[(status["brand"], status["tab"])]
+        if len(rows) != status["row_count"] or any(row["sha"] != status["accepted_sha"] for row in rows):
+            raise ValueError("Report rows and accepted tab decisions describe different snapshots")
     counts = Counter(s["status"] for s in ordered)
     metrics = "".join((
         _metric("Accepted records", sum(len(rows) for rows in by_tab.values())),
@@ -165,12 +178,15 @@ def render_board(statuses, records, destination, *, title="Workbook status board
     if not panels:
         panels = '<p class="empty">No workbooks have been processed.</p>'
     timestamp = f" · {_text(as_of)}" if as_of else ""
+    brand_count = len({s["brand"] for s in ordered})
+    brands = "brand" if brand_count == 1 else "brands"
+    tabs = "tab" if len(ordered) == 1 else "tabs"
     html = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{_text(title)} | Sedgewater Outfitters</title><style>{CSS}</style></head>
 <body><header class="mast"><div class="mast-inner"><strong>Sedgewater Outfitters</strong>
 <span>Synthetic portfolio demo</span></div></header><main>
-<header class="intro"><h1>{_text(title)}</h1><p>Work in progress across {len({s["brand"] for s in ordered})} brands and {len(ordered)} workbook tabs{timestamp}</p></header>
+<header class="intro"><h1>{_text(title)}</h1><p>Work in progress across {brand_count} {brands} and {len(ordered)} workbook {tabs}{timestamp}</p></header>
 <dl class="metrics">{metrics}</dl>
 <section aria-labelledby="tabs"><div class="section-head"><h2 id="tabs">Workbook tabs</h2>
 <p>Open a tab to trace each value to its source. Tabs with rejected inputs appear first.</p></div>
@@ -178,5 +194,13 @@ def render_board(statuses, records, destination, *, title="Workbook status board
 """
     path = Path(destination)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(html, encoding="utf-8")
+    # Readers opening the board during refresh see one complete snapshot.
+    draft = NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent, delete=False)
+    temporary = Path(draft.name)
+    try:
+        with draft:
+            draft.write(html)
+        temporary.replace(path)
+    finally:
+        temporary.unlink(missing_ok=True)
     return path
