@@ -1,0 +1,21 @@
+{
+  "brand": "copper-rill",
+  "tab": "East",
+  "sha": "4d5e115022565eed796d654d669f14a77afb0b54ab542a55af9ffc42dd67129b",
+  "cell": "A20",
+  "value": "CR-018",
+  "category": "identity_ambiguity",
+  "finding": {
+    "reviewer": "Claude",
+    "sha_comparison": "different",
+    "cell": "A20",
+    "quote": "CR-018",
+    "explanation": "Reference-only row cannot identify a complete item",
+    "review_status": "received",
+    "commentary": "**Exception: identity_ambiguity (East tab)**\n\nCell A20 contains \"CR-018\", which is a reference-only value. Under the rule \"Reference-only row cannot identify a complete item,\" this row can't be used to identify a full item. To repair it, replace or supplement the reference with the identifying details the item needs. Also note that the sha_comparison is \"different,\" so confirm the tab matches the expected version before resubmitting. The acceptance decision is unchanged.",
+    "model": [
+      "claude-haiku-5-5"
+    ],
+    "cost_usd": 0.0002111
+  }
+}
