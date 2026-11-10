@@ -1,10 +1,24 @@
 # Failsafe Workbook Pipeline
 
-Two source tabs failed on Tuesday. The work-in-progress report still served all **288 previously validated items**, and the other 14 tabs stayed current. Readers could see which data was older and trace each value to its original Excel cell.
+In my production work, I designed and built a system that turned differently structured work-in-progress workbooks from **more than 50 brands** into governed, traceable data.
+
+For this independent reconstruction, I simplified acceptance to one complete worksheet at a time. We couldn’t assign persistent IDs to source rows. Rows can move, identifiers can repeat, and values can change, so matching a correction to a quarantined row would be unreliable. A worksheet snapshot gives me a dependable unit to accept or quarantine while healthy tabs continue to publish.
+
+I directed Codex through implementation and testing and used Claude to review exceptions against source cells and propose repairs independently. I retained responsibility for the architecture, engineering decisions, and final acceptance.
+
+In the second synthetic demo run, two of 16 tabs failed validation. The report still served all 288 items: 36 from the last accepted versions of those tabs, with their age visible. A healthy tab in the same workbook published its updated date.
 
 ![Run 2 status board showing 288 served records, 14 current tabs and two tabs on dated fallback](demo/status-board.png)
 
-Sedgewater Outfitters is a fictional outdoor-gear company. Each brand tracks its own items in Excel. This independently built portfolio project demonstrates the engineering behind a reporting system that can keep running when its inputs change. All workbooks, names and scenarios are synthetic.
+## Three-minute review of a split-row repair
+
+1. [Issue #1 — Original failure](https://github.com/snicolello/failsafe-workbook-pipeline/issues/1). On Copper Rill’s East tab, one row held the item ID `CR-018` and the next held its details. Guessing which rows belonged together could assign a date to the wrong item or leave the item out of the report.
+2. [PR #3 — Implemented repair](https://github.com/snicolello/failsafe-workbook-pipeline/pull/3). Only the affected region can pair an ID-only row with the complete detail row immediately below it. The recovered record traces its ID to `East!A20` and its target date to `East!D21`.
+3. [Regression tests](tests/test_paired_rows.py). The tests reject a second ID, missing details, and an unexpected populated cell. They also compare every parsed record on the unaffected West tab before and after the repair and verify that West still rejects the same split-row layout.
+
+## Explore the four-run demo
+
+Sedgewater Outfitters is a fictional outdoor-gear company. Each brand tracks its own items in Excel. All demo workbooks, names, and scenarios are synthetic.
 
 **Watch the [16-second walkthrough](demo/walkthrough.gif)** or explore the actual board without installing anything. Open the [saved Run 2 board](demo/snapshots/run2/board.html), choose **Download raw file**, and open the downloaded HTML in a browser.
 
