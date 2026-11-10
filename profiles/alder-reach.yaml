@@ -1,0 +1,13 @@
+brand: alder-reach
+stages: [Sample, Fit, Release]
+tabs:
+  Lowland: &layout
+    regions:
+      - headers: [1, 2]
+        columns:
+          item_ref: [Catalogue / Reference]
+          season: [Catalogue / Season]
+          stage: [Delivery / Gate]
+          target_date: [Delivery / Date]
+          owner: [People / Desk]
+  Upland: *layout

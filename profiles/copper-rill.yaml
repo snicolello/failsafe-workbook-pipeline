@@ -1,0 +1,21 @@
+brand: copper-rill
+stages: [Sample, Fit, Release]
+tabs:
+  East: &layout
+    regions:
+      - headers: [1]
+        end_row: 10
+        columns:
+          item_ref: [Reference]
+          season: [Ship season]
+          stage: [Step]
+          target_date: [Commit date]
+          owner: [Lead]
+      - headers: [11]
+        columns:
+          item_ref: [Ref code]
+          season: [Drop]
+          stage: [Checkpoint]
+          target_date: [Deadline]
+          owner: [Desk]
+  West: *layout
